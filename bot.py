@@ -2,6 +2,24 @@ import requests
 import time
 import os
 import json
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
+
+PORT = int(os.environ.get("PORT", 10000))
+
+class HealthCheck(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"OK")
+    def log_message(self, *a):
+        pass
+
+def run_http():
+    s = HTTPServer(("0.0.0.0", PORT), HealthCheck)
+    s.serve_forever()
+
+threading.Thread(target=run_http, daemon=True).start()
 
 TOKEN = os.environ.get("BOT_TOKEN", "8493905380:AAFI-9I1_SfXCWWEJmfcP_CmKazkVmNbsrI")
 ADMIN_ID = int(os.environ.get("ADMIN_ID", "8651166378"))
