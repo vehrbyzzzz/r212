@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+bot_out.txt
+bot_err.txt
